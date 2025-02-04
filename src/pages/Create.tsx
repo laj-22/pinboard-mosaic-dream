@@ -1,0 +1,43 @@
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+
+const Create = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold mb-8">Choose Your Layout</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Button 
+          onClick={() => navigate('/create/4')}
+          className="h-40 bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center"
+        >
+          <div className="grid grid-cols-2 gap-2 p-4">
+            <div className="bg-gray-300 w-16 h-16"></div>
+            <div className="bg-gray-300 w-16 h-16"></div>
+            <div className="bg-gray-300 w-16 h-16"></div>
+            <div className="bg-gray-300 w-16 h-16"></div>
+          </div>
+          <span className="mt-4">4 Images Layout</span>
+        </Button>
+
+        <Button
+          onClick={() => navigate('/create/6')}
+          className="h-40 bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center"
+        >
+          <div className="grid grid-cols-3 gap-2 p-4">
+            <div className="bg-gray-300 w-12 h-12"></div>
+            <div className="bg-gray-300 w-12 h-12"></div>
+            <div className="bg-gray-300 w-12 h-12"></div>
+            <div className="bg-gray-300 w-12 h-12"></div>
+            <div className="bg-gray-300 w-12 h-12"></div>
+            <div className="bg-gray-300 w-12 h-12"></div>
+          </div>
+          <span className="mt-4">6 Images Layout</span>
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default Create;
