@@ -1,9 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const Create = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleCreateBoard = () => {
+    // Check if user has likes
+    const hasLikes = false; // This would be replaced with actual likes check
+    if (!hasLikes) {
+      toast({
+        title: "No Liked Items",
+        description: "You don't have any liked items yet. Like some pins to create a board!",
+        variant: "default",
+      });
+      return;
+    }
+    // Continue with board creation
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">

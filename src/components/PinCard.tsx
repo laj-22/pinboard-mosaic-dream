@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Heart, Bookmark, ArrowLeft } from 'lucide-react';
+import { Heart, Bookmark, ArrowLeft, Upload, RefreshCw } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface PinCardProps {
   imageUrl: string;
@@ -13,6 +15,29 @@ export const PinCard = ({ imageUrl, title, author, hashtags = [] }: PinCardProps
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [currentImage, setCurrentImage] = useState(imageUrl);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCurrentImage(reader.result as string);
+        toast({
+          title: "Image Updated",
+          description: "Your image has been successfully updated!",
+          variant: "default",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
 
   return (
     <>
@@ -21,7 +46,7 @@ export const PinCard = ({ imageUrl, title, author, hashtags = [] }: PinCardProps
         onClick={() => setIsOpen(true)}
       >
         <img
-          src={imageUrl}
+          src={currentImage}
           alt={title}
           className="w-full object-cover rounded-lg transition-transform duration-200 group-hover:scale-105"
         />
@@ -46,9 +71,26 @@ export const PinCard = ({ imageUrl, title, author, hashtags = [] }: PinCardProps
             <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
               <ArrowLeft className="w-5 h-5" />
             </button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={triggerFileInput}>
+                <Upload className="w-4 h-4 mr-2" />
+                Upload New
+              </Button>
+              <Button variant="outline" size="sm" onClick={triggerFileInput}>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Replace
+              </Button>
+            </div>
           </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            className="hidden"
+          />
           <img
-            src={imageUrl}
+            src={currentImage}
             alt={title}
             className="w-full h-auto rounded-lg max-h-[70vh] object-contain"
           />
