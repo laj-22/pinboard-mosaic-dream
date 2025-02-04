@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Create = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const Create = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Button 
-          onClick={() => navigate('/create/4')}
+          onClick={handleCreateBoard}
           className="h-40 bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center"
         >
           <div className="grid grid-cols-2 gap-2 p-4">
@@ -49,7 +49,7 @@ const Create = () => {
         </Button>
 
         <Button
-          onClick={() => navigate('/create/6')}
+          onClick={handleCreateBoard}
           className="h-40 bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center"
         >
           <div className="grid grid-cols-3 gap-2 p-4">
