@@ -1,8 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import { MasonryGrid } from "@/components/MasonryGrid";
 
 const Search = () => {
   const { query } = useParams();
+  const navigate = useNavigate();
 
   const categories = {
     cars: [
@@ -26,21 +30,62 @@ const Search = () => {
     }
   };
 
+  const allCategories = ['cars', 'houses', 'watches', 'beach', 'forest', 'city'];
+  const matchingCategories = allCategories.filter(cat => 
+    cat.toLowerCase().includes(query?.toLowerCase() || '')
+  );
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-8">Search Results for: {query}</h2>
-      
-      <Tabs defaultValue="all">
-        <TabsList className="mb-8">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="cars">Classic Cars</TabsTrigger>
-          <TabsTrigger value="houses">Houses</TabsTrigger>
-          <TabsTrigger value="watches">Watches</TabsTrigger>
-          <TabsTrigger value="environment">Environment</TabsTrigger>
-        </TabsList>
+      <div className="flex items-center gap-4 mb-8">
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate(-1)}
+          className="p-2 hover:bg-gray-100 rounded-full"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+        <h2 className="text-2xl font-bold">Search Results for: {query}</h2>
+      </div>
 
-        {/* Add content for each tab */}
-      </Tabs>
+      {matchingCategories.length === 0 ? (
+        <div className="text-center py-8">
+          <h3 className="text-xl mb-4">No results found for "{query}"</h3>
+          <p className="text-gray-600 mb-4">Try exploring these categories instead:</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {allCategories.map((category) => (
+              <Button
+                key={category}
+                variant="outline"
+                onClick={() => navigate(`/search/${category}`)}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <Tabs defaultValue="all">
+          <TabsList className="mb-8">
+            <TabsTrigger value="all">All</TabsTrigger>
+            {matchingCategories.map((category) => (
+              <TabsTrigger key={category} value={category}>
+                {category}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          <TabsContent value="all">
+            <MasonryGrid />
+          </TabsContent>
+          
+          {matchingCategories.map((category) => (
+            <TabsContent key={category} value={category}>
+              <MasonryGrid />
+            </TabsContent>
+          ))}
+        </Tabs>
+      )}
     </div>
   );
 };

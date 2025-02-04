@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Heart, Bookmark } from 'lucide-react';
+import { Heart, Bookmark, ArrowLeft } from 'lucide-react';
 
 interface PinCardProps {
   imageUrl: string;
@@ -41,11 +41,16 @@ export const PinCard = ({ imageUrl, title, author, hashtags = [] }: PinCardProps
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-3xl mx-auto w-[90%]">
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          </div>
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-auto rounded-lg"
+            className="w-full h-auto rounded-lg max-h-[70vh] object-contain"
           />
           <div className="flex justify-between items-center mt-4">
             <div>

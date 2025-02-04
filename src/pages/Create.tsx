@@ -1,12 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const Create = () => {
   const navigate = useNavigate();
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-8">Choose Your Layout</h2>
+      <div className="flex items-center gap-4 mb-8">
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate(-1)}
+          className="p-2 hover:bg-gray-100 rounded-full"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
+        <h2 className="text-2xl font-bold">Choose Your Layout</h2>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Button 
           onClick={() => navigate('/create/4')}
