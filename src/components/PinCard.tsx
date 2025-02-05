@@ -1,8 +1,5 @@
-// File: src/components/PinCard.tsx
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Heart, Bookmark } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 const getStoredLikes = () => JSON.parse(localStorage.getItem("likes") || "[]");
@@ -11,7 +8,6 @@ const setStoredLikes = (likes) => localStorage.setItem("likes", JSON.stringify(l
 const setStoredSaved = (saved) => localStorage.setItem("saved", JSON.stringify(saved));
 
 export const PinCard = ({ imageUrl, title, author, hashtags = [] }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [likes, setLikes] = useState(getStoredLikes());
   const [saved, setSaved] = useState(getStoredSaved());
   const isLiked = likes.includes(imageUrl);
@@ -36,18 +32,16 @@ export const PinCard = ({ imageUrl, title, author, hashtags = [] }) => {
   };
 
   return (
-    <>
-      <div className="relative group" onClick={() => setIsOpen(true)}>
-        <img src={imageUrl} alt={title} className="w-full rounded-lg" />
-        <div className="absolute top-2 right-2 flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); toggleLike(); }}>
-            <Heart className={isLiked ? "text-red-500" : "text-gray-500"} />
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); toggleSave(); }}>
-            <Bookmark className={isSaved ? "text-blue-500" : "text-gray-500"} />
-          </button>
-        </div>
+    <div className="relative group">
+      <img src={imageUrl} alt={title} className="w-full rounded-lg" />
+      <div className="absolute top-2 right-2 flex gap-2">
+        <button onClick={(e) => { e.stopPropagation(); toggleLike(); }}>
+          <Heart className={isLiked ? "text-red-500" : "text-gray-500"} />
+        </button>
+        <button onClick={(e) => { e.stopPropagation(); toggleSave(); }}>
+          <Bookmark className={isSaved ? "text-blue-500" : "text-gray-500"} />
+        </button>
       </div>
-    </>
+    </div>
   );
 };
