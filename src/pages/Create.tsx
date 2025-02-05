@@ -1,9 +1,8 @@
-// File: src/pages/Create.tsx
 import { useState } from "react";
 
 const getStoredSaved = () => JSON.parse(localStorage.getItem("saved") || "[]");
 
-export const Create = () => {
+const Create = () => {
   const [boardName, setBoardName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
@@ -24,8 +23,12 @@ export const Create = () => {
         className="border p-2 rounded w-full mb-4"
       />
       <div className="mb-4">
-        <button className="mr-2 p-2 bg-gray-200 rounded" onClick={() => setShowSaved(false)}>Upload New</button>
-        <button className="p-2 bg-gray-200 rounded" onClick={() => setShowSaved(true)}>Select from Saved</button>
+        <button className="mr-2 p-2 bg-gray-200 rounded" onClick={() => setShowSaved(false)}>
+          Upload New
+        </button>
+        <button className="p-2 bg-gray-200 rounded" onClick={() => setShowSaved(true)}>
+          Select from Saved
+        </button>
       </div>
       {showSaved ? (
         <div className="grid grid-cols-3 gap-2">
@@ -34,15 +37,32 @@ export const Create = () => {
               key={index}
               src={img}
               alt="Saved"
-              className={`cursor-pointer rounded-lg ${selectedImages.includes(img) ? "border-2 border-blue-500" : ""}`}
-              onClick={() => setSelectedImages(selectedImages.includes(img) ? selectedImages.filter(i => i !== img) : [...selectedImages, img])}
+              className={`cursor-pointer rounded-lg ${
+                selectedImages.includes(img) ? "border-2 border-blue-500" : ""
+              }`}
+              onClick={() =>
+                setSelectedImages(
+                  selectedImages.includes(img)
+                    ? selectedImages.filter((i) => i !== img)
+                    : [...selectedImages, img]
+                )
+              }
             />
           ))}
         </div>
       ) : (
-        <input type="file" accept="image/*" className="border p-2 rounded w-full" onChange={(e) => setSelectedImages([...selectedImages, URL.createObjectURL(e.target.files[0])])} />
+        <input
+          type="file"
+          accept="image/*"
+          className="border p-2 rounded w-full"
+          onChange={(e) => setSelectedImages([...selectedImages, URL.createObjectURL(e.target.files[0])])}
+        />
       )}
-      <button onClick={handleCreateBoard} className="mt-4 p-2 bg-blue-500 text-white rounded w-full">Create Board</button>
+      <button onClick={handleCreateBoard} className="mt-4 p-2 bg-blue-500 text-white rounded w-full">
+        Create Board
+      </button>
     </div>
   );
 };
+
+export default Create;
