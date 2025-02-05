@@ -1,4 +1,4 @@
-```typescript
+
 import { PinCard } from './PinCard';
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
@@ -398,7 +398,9 @@ const TRENDING_CATEGORIES = {
   ]
 };
 
-export const MasonryGrid = () => {
+interface MasonryGridProps {}
+
+export const MasonryGrid: React.FC<MasonryGridProps> = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { toast } = useToast();
   
@@ -469,4 +471,3 @@ export const MasonryGrid = () => {
     </div>
   );
 };
-```
