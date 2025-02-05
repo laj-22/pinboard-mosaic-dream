@@ -1,6 +1,7 @@
 // File: src/pages/Create.tsx
 import { useState } from "react";
-import { savedStorage } from "@/components/PinCard";
+
+const getStoredSaved = () => JSON.parse(localStorage.getItem("saved") || "[]");
 
 export const Create = () => {
   const [boardName, setBoardName] = useState("");
@@ -28,7 +29,7 @@ export const Create = () => {
       </div>
       {showSaved ? (
         <div className="grid grid-cols-3 gap-2">
-          {[...savedStorage].map((img, index) => (
+          {getStoredSaved().map((img, index) => (
             <img
               key={index}
               src={img}
@@ -39,7 +40,7 @@ export const Create = () => {
           ))}
         </div>
       ) : (
-        <input type="file" accept="image/*" className="border p-2 rounded w-full" onChange={(e) => setSelectedImages([URL.createObjectURL(e.target.files[0])])} />
+        <input type="file" accept="image/*" className="border p-2 rounded w-full" onChange={(e) => setSelectedImages([...selectedImages, URL.createObjectURL(e.target.files[0])])} />
       )}
       <button onClick={handleCreateBoard} className="mt-4 p-2 bg-blue-500 text-white rounded w-full">Create Board</button>
     </div>
