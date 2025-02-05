@@ -5,45 +5,34 @@ import { Heart, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-// Persistent storage for likes and saved images
 const getStoredLikes = () => JSON.parse(localStorage.getItem("likes") || "[]");
 const getStoredSaved = () => JSON.parse(localStorage.getItem("saved") || "[]");
+const setStoredLikes = (likes) => localStorage.setItem("likes", JSON.stringify(likes));
+const setStoredSaved = (saved) => localStorage.setItem("saved", JSON.stringify(saved));
 
 export const PinCard = ({ imageUrl, title, author, hashtags = [] }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLiked, setIsLiked] = useState(getStoredLikes().includes(imageUrl));
-  const [isSaved, setIsSaved] = useState(getStoredSaved().includes(imageUrl));
+  const [likes, setLikes] = useState(getStoredLikes());
+  const [saved, setSaved] = useState(getStoredSaved());
+  const isLiked = likes.includes(imageUrl);
+  const isSaved = saved.includes(imageUrl);
   const { toast } = useToast();
 
   useEffect(() => {
-    localStorage.setItem("likes", JSON.stringify(getStoredLikes()));
-    localStorage.setItem("saved", JSON.stringify(getStoredSaved()));
-  }, [isLiked, isSaved]);
+    setStoredLikes(likes);
+    setStoredSaved(saved);
+  }, [likes, saved]);
 
   const toggleLike = () => {
-    let likes = getStoredLikes();
-    if (isLiked) {
-      likes = likes.filter((item) => item !== imageUrl);
-      toast({ title: "Removed from Likes" });
-    } else {
-      likes.push(imageUrl);
-      toast({ title: "Added to Likes" });
-    }
-    localStorage.setItem("likes", JSON.stringify(likes));
-    setIsLiked(!isLiked);
+    const updatedLikes = isLiked ? likes.filter((item) => item !== imageUrl) : [...likes, imageUrl];
+    setLikes(updatedLikes);
+    toast({ title: isLiked ? "Removed from Likes" : "Added to Likes" });
   };
 
   const toggleSave = () => {
-    let saved = getStoredSaved();
-    if (isSaved) {
-      saved = saved.filter((item) => item !== imageUrl);
-      toast({ title: "Removed from Saved" });
-    } else {
-      saved.push(imageUrl);
-      toast({ title: "Saved Successfully" });
-    }
-    localStorage.setItem("saved", JSON.stringify(saved));
-    setIsSaved(!isSaved);
+    const updatedSaved = isSaved ? saved.filter((item) => item !== imageUrl) : [...saved, imageUrl];
+    setSaved(updatedSaved);
+    toast({ title: isSaved ? "Removed from Saved" : "Saved Successfully" });
   };
 
   return (
